@@ -24,7 +24,7 @@ var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Initial Params
-var chosenXAxis = "healthcare";
+var chosenXAxis = "poverty";
 
 // function used for updating x-scale var upon click on axis label
 function xScale(censusData, chosenXAxis) {
@@ -107,8 +107,9 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
 
   // Create y scale function
     var yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(censusData, d => d.poverty)])
-        .range([chartHeight, 0]);
+        .domain([0, d3.max(censusData, d => d.healthcare)])
+        .range([chartHeight, 0])
+        .nice();
 
   // Create initial axis functions
     var bottomAxis = d3.axisBottom(xLinearScale);
@@ -130,7 +131,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .enter()
         .append("circle")
         .attr("cx", d => xLinearScale(d[chosenXAxis]))
-        .attr("cy", d => yLinearScale(d.num_hits))
+        .attr("cy", d => yLinearScale(d.healthcare))
         .attr("r", 20)
         .attr("fill", "green")
         .attr("opacity", ".5");
@@ -160,7 +161,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .attr("x", 0 - (chartHeight / 2))
         .attr("dy", "1em")
         .classed("axis-text", true)
-        .text("Y Label");
+        .text("Healthcare");
 
   // updateToolTip function above csv import
 var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
