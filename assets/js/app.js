@@ -76,8 +76,8 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     }
 
     var toolTip = d3.tip()
-        .attr("class", "tooltip")
-        .offset([80, -60])
+        .attr("class", "d3-tip")
+        .offset([10, 10])
         .html(function(d) {
         return (`${d.state}<br>${label} ${d[chosenXAxis]}`);
         });
@@ -145,7 +145,9 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .attr("r", 20)
         .attr("fill", "lightblue")
         .attr("opacity", ".75")
-        .attr("text", d => d.abbr);
+        //.append("text")
+        //.attr("class", "stateCircle")
+        //.text(function(d){return d.abbr});
 
   // Create group for  2 x- axis labels
     var labelsGroup = chartGroup.append("g")
