@@ -100,20 +100,20 @@ function makeResponsive() {
     // function used for updating circles group with new tooltip
     function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
         //x axis match
-        if (chosenXAxis == "poverty") {
+        if (chosenXAxis === "poverty") {
             var labelx = "In Poverty (%):";
         }
-        else if (chosenXAxis == "income") {
+        else if (chosenXAxis === "income") {
             var labelx = "Household Income (Median $):";
         }
         else {
             var labelx = "Median Age:";
         }
         //y axis match
-        if (chosenYAxis == "healthcare") {
+        if (chosenYAxis === "healthcare") {
             var labely = "Lacks Healthcare (%):";
         }
-        else if (chosenYAxis == "obesity") {
+        else if (chosenYAxis === "obesity") {
             var labely = "Obesity (%):";
         }
         else {
@@ -242,14 +242,14 @@ function makeResponsive() {
     var obesityLabel = labelsGroupY.append("text")
         .attr("x", 0 - (chartHeight / 2))
         .attr("y", 0 - margin.left + 40)
-        .attr("value", "income") // value to grab for event listener
+        .attr("value", "obesity") // value to grab for event listener
         .classed("inactive", true)
         .text("Obesity (%)");
 
     var smokesLabel = labelsGroupY.append("text")
         .attr("x", 0 - (chartHeight / 2))
         .attr("y", 0 - margin.left + 20)
-        .attr("value", "age") // value to grab for event listener
+        .attr("value", "smokes") // value to grab for event listener
         .classed("inactive", true)
         .text("Smokes (%)");
 
@@ -336,14 +336,14 @@ function makeResponsive() {
             // updates x axis with transition
             yAxis = renderAxisY(yLinearScale, yAxis);
 
-            // updates circles with new x values
+            // updates circles with new Y values
             circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
 
             // updates tooltips with new info
-            circlesGroup = updateToolTip(chosenYAxis, chosenYAxis, circlesGroup);
+            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
             // changes classes to change bold text
-            if (chosenXAxis === "healthcare") {
+            if (chosenYAxis === "healthcare") {
             healthcareLabel
                 .classed("active", true)
                 .classed("inactive", false);
@@ -354,7 +354,7 @@ function makeResponsive() {
                 .classed("active", false)
                 .classed("inactive", true);
             }
-            else if (chosenXAxis === "obesity"){
+            else if (chosenYAxis === "obesity"){
             healthcareLabel
                 .classed("active", false)
                 .classed("inactive", true);
