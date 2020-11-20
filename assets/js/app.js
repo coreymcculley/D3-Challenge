@@ -97,6 +97,29 @@ function makeResponsive() {
             return circlesGroup;
         }
 
+         // function used for updating text group with a transition to
+        // new texts
+        function renderText(textGroup, newXScale, chosenXaxis, chosenYaxis) {
+            if (!textGroup.empty()) {
+                textGroup.remove();
+            }
+            
+            textGroup = chartGroup.append('g')
+                .selectAll("text")
+                .data(censusData)
+                .join("text")
+                .text(d => d.abbr)
+                .attr("dx", d => xLinearScale(d[chosenXAxis]))
+                .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius /4)
+                .attr("class", "stateText");
+
+            textGroup.transition()
+                .duration(1000)
+                .attr("cx", d => newXScale(d[chosenXAxis]));
+
+            return textGroup;
+        }
+
     // function used for updating circles group with new tooltip
     function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
         //x axis match
@@ -126,7 +149,6 @@ function makeResponsive() {
             return (`${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${d[chosenYAxis]}`);
             });
 
-
         circlesGroup.call(toolTip);
 
         circlesGroup.on("mouseover", function(data) {
@@ -137,7 +159,7 @@ function makeResponsive() {
             toolTip.hide(data);
             });
 
-        return circlesGroup;                      
+        return circlesGroup;                       
     }
 
     // Retrieve data from the CSV file and execute everything below
@@ -181,19 +203,27 @@ function makeResponsive() {
             .call(leftAxis);
 
     // append initial circles
+        var radius = 20;
         var circlesGroup = chartGroup.selectAll("circle")
             .data(censusData)
             .enter()
             .append("circle")
             .attr("cx", d => xLinearScale(d[chosenXAxis]))
             .attr("cy", d => yLinearScale(d[chosenYAxis]))
-            .attr("r", 20)
+            .attr("r", radius)
             .attr("fill", "lightblue")
-            .attr("opacity", ".75")
-            // .append("text")
-            // //.attr("class", "stateCircle")
-            // .text(function(d){return d.abbr})
-            // .style("fill", "white");
+            .attr("opacity", ".75");
+
+
+        var textGroup = chartGroup.append('g')
+                .selectAll("text")
+                .data(censusData)
+                .join("text")
+                .text(d => d.abbr)
+                .attr("dx", d => xLinearScale(d[chosenXAxis]))
+                .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius /4)
+                .attr("class", "stateText");
+
 
     // Create group for  3 x- axis labels
         var labelsGroupX = chartGroup.append("g")
@@ -220,14 +250,7 @@ function makeResponsive() {
             .classed("inactive", true)
             .text("Age (Median)");
 
-    // append y axis
-        // chartGroup.append("text")
-        //     .attr("transform", "rotate(-90)")
-        //     .attr("y", 0 - margin.left)
-        //     .attr("x", 0 - (chartHeight / 2))
-        //     .attr("dy", "1em")
-        //     .classed("axis-text", true)
-        //     .text("Healthcare");
+ 
     // Create group for  3 Y- axis labels
     var labelsGroupY = chartGroup.append("g")
         .attr("transform", `rotate(-90)`);
@@ -276,8 +299,21 @@ function makeResponsive() {
             // updates x axis with transition
             xAxis = renderAxisX(xLinearScale, xAxis);
 
-            // updates circles with new x values
+            // updates circles and texts with new x values
             circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+
+            radius = 20;
+            if (!textGroup.empty()) {
+                textGroup.remove();
+            }
+            textGroup = chartGroup.append('g')
+                .selectAll("text")
+                .data(censusData)
+                .join("text")
+                .text(d => d.abbr)
+                .attr("dx", d => xLinearScale(d[chosenXAxis]))
+                .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius / 4)
+                .attr("class", "stateText");
 
             // updates tooltips with new info
             circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
@@ -339,6 +375,19 @@ function makeResponsive() {
             // updates circles with new Y values
             circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
 
+            radius = 20;
+            if (!textGroup.empty()) {
+                textGroup.remove();
+            }
+            textGroup = chartGroup.append('g')
+                .selectAll("text")
+                .data(censusData)
+                .join("text")
+                .text(d => d.abbr)
+                .attr("dx", d => xLinearScale(d[chosenXAxis]))
+                .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius / 4)
+                .attr("class", "stateText");
+                
             // updates tooltips with new info
             circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
