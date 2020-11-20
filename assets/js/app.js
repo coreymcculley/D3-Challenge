@@ -97,28 +97,6 @@ function makeResponsive() {
             return circlesGroup;
         }
 
-         // function used for updating text group with a transition to
-        // new texts
-        function renderText(textGroup, newXScale, chosenXaxis, chosenYaxis) {
-            if (!textGroup.empty()) {
-                textGroup.remove();
-            }
-            
-            textGroup = chartGroup.append('g')
-                .selectAll("text")
-                .data(censusData)
-                .join("text")
-                .text(d => d.abbr)
-                .attr("dx", d => xLinearScale(d[chosenXAxis]))
-                .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius /4)
-                .attr("class", "stateText");
-
-            textGroup.transition()
-                .duration(1000)
-                .attr("cx", d => newXScale(d[chosenXAxis]));
-
-            return textGroup;
-        }
 
     // function used for updating circles group with new tooltip
     function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
@@ -144,7 +122,7 @@ function makeResponsive() {
         }
         var toolTip = d3.tip()
             .attr("class", "d3-tip")
-            .offset([80, 50])
+            .offset([-8, 0])
             .html(function(d) {
             return (`${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${d[chosenYAxis]}`);
             });
@@ -220,9 +198,14 @@ function makeResponsive() {
                 .data(censusData)
                 .join("text")
                 .text(d => d.abbr)
-                .attr("dx", d => xLinearScale(d[chosenXAxis]))
-                .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius /4)
+                .attr("x", d => xLinearScale(d[chosenXAxis]))
+                .attr("y", d => yLinearScale(d[chosenYAxis]) + radius /4)
                 .attr("class", "stateText");
+
+        var toolTip = d3.tip()
+            .attr("class", "d3-tip")
+            .offset([-8, 0])
+            .html(d => `${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${d[chosenYAxis]}`);
 
 
     // Create group for  3 x- axis labels
@@ -250,7 +233,6 @@ function makeResponsive() {
             .classed("inactive", true)
             .text("Age (Median)");
 
- 
     // Create group for  3 Y- axis labels
     var labelsGroupY = chartGroup.append("g")
         .attr("transform", `rotate(-90)`);
@@ -311,8 +293,8 @@ function makeResponsive() {
                 .data(censusData)
                 .join("text")
                 .text(d => d.abbr)
-                .attr("dx", d => xLinearScale(d[chosenXAxis]))
-                .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius / 4)
+                .attr("x", d => xLinearScale(d[chosenXAxis]))
+                .attr("y", d => yLinearScale(d[chosenYAxis]) + radius / 4)
                 .attr("class", "stateText");
 
             // updates tooltips with new info
@@ -384,8 +366,8 @@ function makeResponsive() {
                 .data(censusData)
                 .join("text")
                 .text(d => d.abbr)
-                .attr("dx", d => xLinearScale(d[chosenXAxis]))
-                .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius / 4)
+                .attr("x", d => xLinearScale(d[chosenXAxis]))
+                .attr("y", d => yLinearScale(d[chosenYAxis]))
                 .attr("class", "stateText");
                 
             // updates tooltips with new info
