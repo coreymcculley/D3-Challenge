@@ -86,17 +86,54 @@ function makeResponsive() {
             return yAxis;
             }
 
-        // function used for updating circles group with a transition to
-        // new circles
-        function renderCircles(circlesGroup, newXScale, chosenXaxis) {
+        // // function used for updating circles group with a transition to
+        // // new circles
+        // function renderCircles(circlesGroup, newXScale, chosenXaxis) {
 
+        //     circlesGroup.transition()
+        //         .duration(1000)
+        //         .attr("cx", d => newXScale(d[chosenXAxis]));
+
+        //     return circlesGroup;
+        // }
+
+        // function used for updating circles x
+        function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
+  
             circlesGroup.transition()
                 .duration(1000)
                 .attr("cx", d => newXScale(d[chosenXAxis]));
-
+          
             return circlesGroup;
         }
-
+        
+        // function used for updating circles x text with a transition 
+        function renderXText(textGroup, newXScale, chosenXAxis) {
+            textGroup.transition()
+                .duration(1000)
+                .attr("dx", d => newXScale(d[chosenXAxis]));
+          
+            return textGroup;
+        }
+        // function used for updating circles y
+        function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
+            var radius = 20;
+            circlesGroup.transition()
+                .duration(1000)
+                .attr("cy", d => newYScale(d[chosenYAxis]) + radius /4);
+          
+            return circlesGroup;
+        }
+        
+        // function used for updating circles y text with a transition 
+        function renderYText(textGroup, newYScale, chosenYAxis) {
+            var radius = 20;
+            textGroup.transition()
+                .duration(1000)
+                .attr("dy", d => newYScale(d[chosenYAxis]) + radius /4);
+          
+            return textGroup;
+        }
 
     // function used for updating circles group with new tooltip
     function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
@@ -193,13 +230,13 @@ function makeResponsive() {
             .attr("opacity", ".75");
 
 
-        var textGroup = chartGroup.append('g')
-                .selectAll("text")
+        var textGroup = chartGroup.selectAll(null)
                 .data(censusData)
-                .join("text")
+                .enter()
+                .append("text")
+                .attr("dx", d => xLinearScale(d[chosenXAxis]))
+                .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius /4)
                 .text(d => d.abbr)
-                .attr("x", d => xLinearScale(d[chosenXAxis]))
-                .attr("y", d => yLinearScale(d[chosenYAxis]) + radius /4)
                 .attr("class", "stateText");
 
         var toolTip = d3.tip()
@@ -281,21 +318,24 @@ function makeResponsive() {
             // updates x axis with transition
             xAxis = renderAxisX(xLinearScale, xAxis);
 
-            // updates circles and texts with new x values
-            circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+            // updates circles with new x values
+            circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
 
-            radius = 20;
-            if (!textGroup.empty()) {
-                textGroup.remove();
-            }
-            textGroup = chartGroup.append('g')
-                .selectAll("text")
-                .data(censusData)
-                .join("text")
-                .text(d => d.abbr)
-                .attr("x", d => xLinearScale(d[chosenXAxis]))
-                .attr("y", d => yLinearScale(d[chosenYAxis]) + radius / 4)
-                .attr("class", "stateText");
+            // updates circles text with new x values
+            textGroup = renderXText(textGroup, xLinearScale, chosenXAxis);
+
+            // radius = 20;
+            // if (!textGroup.empty()) {
+            //     textGroup.remove();
+            // }
+            // textGroup = chartGroup.selectAll(null)
+            //     .data(censusData)
+            //     .enter()
+            //     .append("text")
+            //     .attr("dx", d => xLinearScale(d[chosenXAxis]))
+            //     .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius /4)
+            //     .text(d => d.abbr)
+            //     .attr("class", "stateText");
 
             // updates tooltips with new info
             circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
@@ -355,20 +395,23 @@ function makeResponsive() {
             yAxis = renderAxisY(yLinearScale, yAxis);
 
             // updates circles with new Y values
-            circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
+            circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
 
-            radius = 20;
-            if (!textGroup.empty()) {
-                textGroup.remove();
-            }
-            textGroup = chartGroup.append('g')
-                .selectAll("text")
-                .data(censusData)
-                .join("text")
-                .text(d => d.abbr)
-                .attr("x", d => xLinearScale(d[chosenXAxis]))
-                .attr("y", d => yLinearScale(d[chosenYAxis]))
-                .attr("class", "stateText");
+            // updates circles text with new y values
+            textGroup = renderYText(textGroup, yLinearScale, chosenYAxis);
+
+            // radius = 20;
+            // if (!textGroup.empty()) {
+            //     textGroup.remove();
+            // }
+            // textGroup = chartGroup.selectAll(null)
+            //     .data(censusData)
+            //     .enter()
+            //     .append("text")
+            //     .attr("dx", d => xLinearScale(d[chosenXAxis]))
+            //     .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius /4)
+            //     .text(d => d.abbr)
+            //     .attr("class", "stateText");
                 
             // updates tooltips with new info
             circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
