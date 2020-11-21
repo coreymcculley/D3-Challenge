@@ -1,7 +1,10 @@
 function makeResponsive() {
   // if the SVG area isn't empty when the browser loads,
   // remove it and replace it with a resized version of the chart
-  var svgArea = d3.select("body").select("svg").classed("col-xs-12  col-md-9", true);
+  var svgArea = d3
+    .select("body")
+    .select("svg")
+    .classed("col-xs-12  col-md-9", true);
 
   // clear svg is not empty
   if (!svgArea.empty()) {
@@ -241,6 +244,11 @@ function makeResponsive() {
         .attr("font-color", "black")
         .attr("class", "stateText");
 
+    //   var chartTitle = d3
+    //     .select("h3")
+    //     .append("text")
+    //     .text(`${chosenYAxis} vs. ${chosenXAxis}`);
+
       var toolTip = d3
         .tip()
         .attr("class", "d3-tip")
@@ -338,21 +346,12 @@ function makeResponsive() {
           // updates circles text with new x values
           textGroup = renderXText(textGroup, xLinearScale, chosenXAxis);
 
-          // radius = 20;
-          // if (!textGroup.empty()) {
-          //     textGroup.remove();
-          // }
-          // textGroup = chartGroup.selectAll(null)
-          //     .data(censusData)
-          //     .enter()
-          //     .append("text")
-          //     .attr("dx", d => xLinearScale(d[chosenXAxis]))
-          //     .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius /4)
-          //     .text(d => d.abbr)
-          //     .attr("class", "stateText");
-
-          // updates tooltips with new info
           circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+
+        //   var chartTitle = d3
+        //     .select("h3")
+        //     .append("text")
+        //     .text(`${chosenYAxis} vs. ${chosenXAxis}`);
 
           // changes classes to change bold text
           if (chosenXAxis === "poverty") {
@@ -396,21 +395,13 @@ function makeResponsive() {
           // updates circles text with new y values
           textGroup = renderYText(textGroup, yLinearScale, chosenYAxis);
 
-          // radius = 20;
-          // if (!textGroup.empty()) {
-          //     textGroup.remove();
-          // }
-          // textGroup = chartGroup.selectAll(null)
-          //     .data(censusData)
-          //     .enter()
-          //     .append("text")
-          //     .attr("dx", d => xLinearScale(d[chosenXAxis]))
-          //     .attr("dy", d => yLinearScale(d[chosenYAxis]) + radius /4)
-          //     .text(d => d.abbr)
-          //     .attr("class", "stateText");
-
           // updates tooltips with new info
           circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+
+        //   var chartTitle = d3
+        //     .select("h3")
+        //     .append("text")
+        //     .text(`${chosenYAxis} vs. ${chosenXAxis}`);
 
           // changes classes to change bold text
           if (chosenYAxis === "healthcare") {
