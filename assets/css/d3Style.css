@@ -1,3 +1,7 @@
+.background {
+  background: #F5F7FA;
+}
+
 .aText {
   font-family: sans-serif;
   font-size: 16px;
@@ -13,7 +17,7 @@
 
 .inactive {
   font-weight: lighter;
-  fill: #c9c9c9;
+  fill: #979696;
   transition: fill 0.3s ease-out;
   text-anchor: middle;
 }
@@ -40,6 +44,7 @@
 .chart {
   display: block;
   margin: 0;
+  background: #F5F7FA;
 }
 
 .d3-tip {
