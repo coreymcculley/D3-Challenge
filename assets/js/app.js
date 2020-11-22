@@ -87,17 +87,6 @@ function makeResponsive() {
     return yAxis;
   }
 
-  // // function used for updating circles group with a transition to
-  // // new circles
-  // function renderCircles(circlesGroup, newXScale, chosenXaxis) {
-
-  //     circlesGroup.transition()
-  //         .duration(1000)
-  //         .attr("cx", d => newXScale(d[chosenXAxis]));
-
-  //     return circlesGroup;
-  // }
-
   // function used for updating circles x
   function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
     circlesGroup
@@ -160,7 +149,7 @@ function makeResponsive() {
     var toolTip = d3
       .tip()
       .attr("class", "d3-tip")
-      .offset([-800, 5000])
+      .offset([50, 95])
       .html(function (d) {
         return `${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${d[chosenYAxis]}`;
       });
@@ -169,7 +158,7 @@ function makeResponsive() {
 
     circlesGroup
       .on("mouseover", function (data) {
-        toolTip.show(data);
+        toolTip.show(data, this);
       })
       // onmouseout event
       .on("mouseout", function (data, index) {
@@ -230,7 +219,7 @@ function makeResponsive() {
         .attr("cx", (d) => xLinearScale(d[chosenXAxis]))
         .attr("cy", (d) => yLinearScale(d[chosenYAxis]))
         .attr("r", radius)
-        .attr("fill", "lightblue")
+        .attr("fill", "#90EE90")
         .attr("opacity", ".75");
 
       var textGroup = chartGroup
@@ -244,19 +233,12 @@ function makeResponsive() {
         .attr("font-color", "black")
         .attr("class", "stateText");
 
-    //   var chartTitle = d3
-    //     .select("h3")
-    //     .append("text")
-    //     .text(`${chosenYAxis} vs. ${chosenXAxis}`);
-
-      var toolTip = d3
-        .tip()
+      var toolTip = d3.tip()
         .attr("class", "d3-tip")
         .offset([-8, 0])
-        .html(
-          (d) =>
-            `${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${d[chosenYAxis]}`
-        );
+        .html(function(d){
+          return "`${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${d[chosenYAxis]}`"
+        });
 
       // Create group for  3 x- axis labels
       var labelsGroupX = chartGroup
@@ -348,11 +330,6 @@ function makeResponsive() {
 
           circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
-        //   var chartTitle = d3
-        //     .select("h3")
-        //     .append("text")
-        //     .text(`${chosenYAxis} vs. ${chosenXAxis}`);
-
           // changes classes to change bold text
           if (chosenXAxis === "poverty") {
             povertyLabel.classed("active", true).classed("inactive", false);
@@ -376,8 +353,6 @@ function makeResponsive() {
           // replaces chosenXAxis with value
           chosenYAxis = value;
 
-          // console.log(chosenXAxis)
-
           // functions here found above csv import
           // updates x scale for new data
           yLinearScale = yScale(censusData, chosenYAxis);
@@ -397,11 +372,6 @@ function makeResponsive() {
 
           // updates tooltips with new info
           circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
-
-        //   var chartTitle = d3
-        //     .select("h3")
-        //     .append("text")
-        //     .text(`${chosenYAxis} vs. ${chosenXAxis}`);
 
           // changes classes to change bold text
           if (chosenYAxis === "healthcare") {
